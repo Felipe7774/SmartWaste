@@ -1,0 +1,22 @@
+.navbar {
+  background-color: #fff;
+  padding: 1rem;
+  height: 100px;
+  width: 100vw;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0; 
+  z-index: 1000; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+}
+.navbar img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}

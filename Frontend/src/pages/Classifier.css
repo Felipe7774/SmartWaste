@@ -1,0 +1,126 @@
+.classifier-section {
+  padding: 80px 10%;
+  background: #f8fdf8;
+  display: flex;
+  justify-content: center;
+}
+
+.classifier-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.text-side {
+  flex: 1;
+}
+
+.text-side h2 {
+  font-size: 2rem;
+  color: #2ecc71;
+  margin-bottom: 15px;
+}
+
+.text-side p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.upload-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.open-camera-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.camera-view {
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 3px solid #2ecc71;
+}
+
+.capture-btn {
+  margin-top: 15px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.preview-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 3px solid #2ecc71;
+}
+
+.result-section {
+  margin-top: 20px;
+}
+
+.result {
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.result.reciclable {
+  background-color: #2980b9;
+  color: #fff;
+}
+
+.result.orgánico {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.result.inorgánico {
+  background-color: #f39c12;
+  color: #fff;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .classifier-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .text-side,
+  .upload-side {
+    width: 100%;
+  }
+}
