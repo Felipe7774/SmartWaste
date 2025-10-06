@@ -21,7 +21,6 @@ function Classifier() {
     }
   };
 
-  // 🔹 Este efecto se ejecuta cuando isCameraOn cambia a true
   useEffect(() => {
     if (isCameraOn && videoRef.current && stream) {
       videoRef.current.srcObject = stream;
@@ -60,7 +59,7 @@ function Classifier() {
   };
 
   return (
-    <div className="classifier-section">
+    <div className="classifier-section" id="classifier">
       <div className="classifier-content">
         <div className="text-side">
           <h2>Clasificador Inteligente de Residuos</h2>

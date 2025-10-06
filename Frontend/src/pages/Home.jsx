@@ -1,10 +1,18 @@
 import "./home.css";
-import { Leaf, Brain, Users } from "lucide-react";
-import {Camera,Trash2} from "lucide-react";
+import { Leaf, Brain, Users, Camera, Trash2 } from "lucide-react";
+import { useRef } from "react";
+import Classifier from "./Classifier";
 
 function Home() {
+  const classifierRef = useRef(null);
+
+  const scrollToClassifier = () => {
+    classifierRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="home-container">
+      {/* HERO SECTION */}
       <div className="hero-section">
         <div className="hero-content">
           <h1>Clasifica tus residuos con inteligencia</h1>
@@ -12,7 +20,7 @@ function Home() {
             GreenMind AI te ayuda a reconocer automáticamente el tipo de desecho
             y a separarlo correctamente para cuidar el planeta.
           </p>
-          <button>Comenzar Clasificación</button>
+          <button onClick={scrollToClassifier}>Comenzar clasificación</button>
         </div>
         <img
           className="hero-section_image"
@@ -20,6 +28,8 @@ function Home() {
           alt="Hero"
         />
       </div>
+
+      {/* INFO CARDS */}
       <div className="info-cards">
         <div className="info-card">
           <Leaf size={40} />
@@ -39,6 +49,8 @@ function Home() {
           <p>Fomenta la educación ambiental en tu comunidad.</p>
         </div>
       </div>
+
+      {/* HOW IT WORKS */}
       <section className="how-it-works">
         <h2>¿Cómo funciona?</h2>
         <div className="steps">
@@ -59,10 +71,17 @@ function Home() {
           </div>
         </div>
       </section>
-     <section className="cta-section">
+
+      {/* CTA */}
+      <section className="cta-section">
         <h2>¿Listo para probar GreenMind AI?</h2>
-        <button>Ir al Clasificador</button>
+        <button onClick={scrollToClassifier}>Ir al Clasificador</button>
       </section>
+
+      {/* CLASSIFIER */}
+      <div ref={classifierRef}>
+        <Classifier />
+      </div>
     </div>
   );
 }
