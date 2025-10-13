@@ -12,7 +12,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* HERO SECTION */}
       <div className="hero-section">
         <div className="hero-content">
           <h1>Clasifica tus residuos con inteligencia</h1>
@@ -71,14 +70,10 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* CTA */}
       <section className="cta-section">
         <h2>¿Listo para probar GreenMind AI?</h2>
         <button onClick={scrollToClassifier}>Ir al Clasificador</button>
       </section>
-
-      {/* CLASSIFIER */}
       <div ref={classifierRef}>
         <Classifier />
       </div>

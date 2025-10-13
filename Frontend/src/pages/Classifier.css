@@ -111,6 +111,32 @@
   background-color: #f39c12;
   color: #fff;
 }
+.historial-section {
+  margin-top: 4rem;
+}
+.historial-section h3 {
+  font-size: 1.5rem;
+  color: #2ecc71;
+  margin-bottom: 1rem;
+}
+
+.historial-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.historial-table th,
+.historial-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.historial-table th {
+  background-color: #f0f0f0;
+}
+
 
 /* Responsivo */
 @media (max-width: 900px) {

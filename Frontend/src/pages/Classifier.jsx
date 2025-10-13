@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import { Camera } from "lucide-react";
 import "./classifier.css";
 
@@ -6,7 +6,9 @@ function Classifier() {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [stream, setStream] = useState(null);
   const [image, setImage] = useState(null);
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [historial, setHistorial] = useState([]);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -49,12 +51,47 @@ function Classifier() {
 
   const classifyWaste = async (imageData) => {
     try {
-      // Simulación del backend
-      setTimeout(() => {
-        setResult("Reciclable");
-      }, 1500);
+      setLoading(true);
+      setResult(null);
+
+      const blob = await (await fetch(imageData)).blob();
+      const formData = new FormData();
+      formData.append("file", blob, "captured.png");
+
+      const response = await fetch("http://192.168.1.90:5000/classify", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      setResult({
+        nombre: data.nombre,
+        tipo_residuo: data.tipo_residuo,
+        confianza: data.confianza,
+      });
+
+      // ✅ Cargar historial después de clasificar
+      fetchHistorial();
+
     } catch (error) {
       console.error("Error al clasificar:", error);
+      setResult({ error: "Error al procesar la imagen" });
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    // Cargar historial al montar el componente
+    fetchHistorial();
+  }, []);
+  const fetchHistorial = async () => {
+    try {
+      const res = await fetch("http://192.168.1.90:5000/historial");
+      const data = await res.json();
+      setHistorial(data);
+    } catch (error) {
+      console.error("Error al cargar historial:", error);
     }
   };
 
@@ -68,10 +105,42 @@ function Classifier() {
             imagen y te dirá cómo debes desecharlo.
           </p>
 
-          {result && (
+          {loading && <p>Analizando residuo... 🔍</p>}
+
+          {result && !loading && !result.error && (
             <div className="result-section">
               <h3>Resultado:</h3>
-              <p className={`result ${result.toLowerCase()}`}>{result}</p>
+              <p><strong>Objeto:</strong> {result.nombre}</p>
+              <p><strong>Tipo de residuo:</strong> {result.tipo_residuo}</p>
+              <p><strong>Confianza:</strong> {result.confianza}%</p>
+            </div>
+          )}
+
+          {result?.error && <p className="error-text">{result.error}</p>}
+          {/* tabla que registra el historial de últimos residuos */}
+          {historial.length > 0 && (
+            <div className="historial-section">
+              <h3>Últimos residuos clasificados:</h3>
+              <table className="historial-table">
+                <thead>
+                  <tr>
+                    <th>Objeto</th>
+                    <th>Tipo</th>
+                    <th>Confianza</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {historial.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.nombre}</td>
+                      <td>{item.tipo_residuo}</td>
+                      <td>{item.confianza}%</td>
+                      <td>{item.fecha}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
@@ -100,6 +169,7 @@ function Classifier() {
 
           <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
+        
       </div>
     </div>
   );
