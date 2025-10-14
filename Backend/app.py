@@ -10,12 +10,12 @@ import os
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-# ✅ Configuración de base de datos SQLite
+#Configuración de base de datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///residuos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# ✅ Modelo de datos
+#Modelo de datos
 class Residuo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50))
@@ -23,14 +23,14 @@ class Residuo(db.Model):
     confianza = db.Column(db.Float)
     fecha = db.Column(db.DateTime, default=datetime.utcnow)
 
-# ✅ Ruta del modelo
+# Ruta del modelo
 model_path = os.path.join("model", "trash-classification-aug.keras")
 model = tf.keras.models.load_model(model_path)
 
-# ✅ Clases del modelo
+# Clases del modelo
 classes = ['Carton', 'Metal', 'Papel', 'Plastico', 'Vidrio']
 
-# ✅ Mapeo de clases a español y tipo de residuo
+# Mapeo de clases a español y tipo de residuo
 CLASS_MAPPING = {
     "Carton": ("Cartón", "Reciclable"),
     "Metal": ("Metal", "Reciclable"),
@@ -39,7 +39,7 @@ CLASS_MAPPING = {
     "Vidrio": ("Vidrio", "Reciclable"),
 }
 
-# ✅ Función de preprocesamiento
+# Función de preprocesamiento
 def preprocess_image(img_path, target_size=(32, 32)):
     img = image.load_img(img_path, target_size=target_size)
     img_array = image.img_to_array(img)
@@ -47,7 +47,7 @@ def preprocess_image(img_path, target_size=(32, 32)):
     img_array /= 255.0
     return img_array
 
-# ✅ Ruta para clasificar imágenes
+# Ruta para clasificar imágenes
 @app.route('/classify', methods=['POST'])
 def classify():
     try:
@@ -77,7 +77,7 @@ def classify():
         # Obtener nombre en español y tipo de residuo
         nombre_es, tipo_residuo = CLASS_MAPPING.get(class_name, ("Desconocido", "No clasificable"))
 
-        # ✅ Guardar en la base de datos
+        # Guardar en la base de datos
         nuevo_residuo = Residuo(
             nombre=nombre_es,
             tipo_residuo=tipo_residuo,
@@ -93,10 +93,10 @@ def classify():
         })
 
     except Exception as e:
-        print(f"❌ Error en /classify: {e}")
+        print(f"Error en /classify: {e}")
         return jsonify({'error': str(e)}), 500
 
-# ✅ Ruta para obtener historial de residuos
+# Ruta para obtener historial de residuos
 @app.route('/historial', methods=['GET'])
 def historial():
     residuos = Residuo.query.order_by(Residuo.fecha.desc()).limit(10).all()

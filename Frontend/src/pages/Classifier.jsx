@@ -101,7 +101,7 @@ function Classifier() {
         <div className="text-side">
           <h2>Clasificador Inteligente de Residuos</h2>
           <p>
-            Usa tu cámara para capturar el residuo. GreenMind AI analizará la
+            Usa tu cámara para capturar el residuo. SmartWaste AI analizará la
             imagen y te dirá cómo debes desecharlo.
           </p>
 

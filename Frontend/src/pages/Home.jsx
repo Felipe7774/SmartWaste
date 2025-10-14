@@ -16,7 +16,7 @@ function Home() {
         <div className="hero-content">
           <h1>Clasifica tus residuos con inteligencia</h1>
           <p>
-            GreenMind AI te ayuda a reconocer automáticamente el tipo de desecho
+            SmartWaste AI te ayuda a reconocer automáticamente el tipo de desecho
             y a separarlo correctamente para cuidar el planeta.
           </p>
           <button onClick={scrollToClassifier}>Comenzar clasificación</button>
@@ -61,7 +61,7 @@ function Home() {
           <div className="step">
             <Brain size={48} color="#2ecc71" />
             <h3>2. La IA lo analiza</h3>
-            <p>GreenMind AI identifica el tipo de desecho con precisión.</p>
+            <p>SmartWaste AI identifica el tipo de desecho con precisión.</p>
           </div>
           <div className="step">
             <Trash2 size={48} color="#2ecc71" />
@@ -71,7 +71,7 @@ function Home() {
         </div>
       </section>
       <section className="cta-section">
-        <h2>¿Listo para probar GreenMind AI?</h2>
+        <h2>¿Listo para probar SmartWaste AI?</h2>
         <button onClick={scrollToClassifier}>Ir al Clasificador</button>
       </section>
       <div ref={classifierRef}>
