@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, use } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Camera } from "lucide-react";
 import "./classifier.css";
 
@@ -11,6 +11,8 @@ function Classifier() {
   const [historial, setHistorial] = useState([]);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+
+  const API_BASE = "http://192.168.0.11:5000";
 
   const openCamera = async () => {
     try {
@@ -58,42 +60,45 @@ function Classifier() {
       const formData = new FormData();
       formData.append("file", blob, "captured.png");
 
-      const response = await fetch("http://192.168.1.90:5000/classify", {
+      const response = await fetch(`${API_BASE}/classify`, {
         method: "POST",
         body: formData,
       });
 
       const data = await response.json();
 
-      setResult({
-        nombre: data.nombre,
-        tipo_residuo: data.tipo_residuo,
-        confianza: data.confianza,
-      });
-
-      // ✅ Cargar historial después de clasificar
-      fetchHistorial();
+      if (response.ok) {
+        setResult({
+          nombre: data.nombre,
+          tipo_residuo: data.tipo_residuo,
+          confianza: data.confianza,
+        });
+        fetchHistorial(); 
+      } else {
+        setResult({ error: data.error || "Error al procesar la imagen" });
+      }
 
     } catch (error) {
       console.error("Error al clasificar:", error);
-      setResult({ error: "Error al procesar la imagen" });
+      setResult({ error: "No se pudo conectar al servidor Flask" });
     } finally {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    // Cargar historial al montar el componente
-    fetchHistorial();
-  }, []);
+
   const fetchHistorial = async () => {
     try {
-      const res = await fetch("http://192.168.1.90:5000/historial");
+      const res = await fetch(`${API_BASE}/historial`);
       const data = await res.json();
       setHistorial(data);
     } catch (error) {
       console.error("Error al cargar historial:", error);
     }
   };
+
+  useEffect(() => {
+    fetchHistorial();
+  }, []);
 
   return (
     <div className="classifier-section" id="classifier">
@@ -105,7 +110,7 @@ function Classifier() {
             imagen y te dirá cómo debes desecharlo.
           </p>
 
-          {loading && <p>Analizando residuo... 🔍</p>}
+          {loading && <p>Analizando residuo...</p>}
 
           {result && !loading && !result.error && (
             <div className="result-section">
@@ -117,7 +122,7 @@ function Classifier() {
           )}
 
           {result?.error && <p className="error-text">{result.error}</p>}
-          {/* tabla que registra el historial de últimos residuos */}
+
           {historial.length > 0 && (
             <div className="historial-section">
               <h3>Últimos residuos clasificados:</h3>
@@ -169,7 +174,6 @@ function Classifier() {
 
           <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
-        
       </div>
     </div>
   );
